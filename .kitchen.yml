@@ -1,0 +1,23 @@
+---
+driver:
+  name: docker
+  socket: tcp://127.0.0.1:4243
+  require_chef_omnibus: true
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos
+
+suites:
+  - name: default
+    run_list: 
+      - recipe[mysql::server]
+    attributes:
+      mysql:
+        version:
+          "5.6"
+      chef_client:
+        config:
+          ssl_verify_mode: ":verify_peer"
