@@ -2,7 +2,6 @@
 driver:
   name: docker
   socket: tcp://127.0.0.1:4243
-  require_chef_omnibus: true
 
 provisioner:
   name: chef_solo
@@ -13,11 +12,10 @@ platforms:
 suites:
   - name: default
     run_list: 
-      - recipe[mysql::server]
+      - recipe[fuelphp]
     attributes:
-      mysql:
-        version:
-          "5.6"
+      fuelphp:
+        user: kitchen
       chef_client:
         config:
           ssl_verify_mode: ":verify_peer"
