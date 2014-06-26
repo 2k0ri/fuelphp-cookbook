@@ -6,7 +6,7 @@
 #
 # 
 #
-%w{httpd php mysql-server php-mysql php-pdo git sudo}.each do |p|
+%w{httpd php mysql-server php-mysql php-pdo git sudo vim}.each do |p|
   package p
 end
 
