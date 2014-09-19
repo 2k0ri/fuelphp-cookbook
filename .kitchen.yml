@@ -4,10 +4,12 @@ driver:
   socket: tcp://127.0.0.1:2375
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
-  - name: centos
+  - name: centos-6.4
+    driver_config:
+      image: centos:centos6
 
 suites:
   - name: default
