@@ -31,25 +31,36 @@ bash 'apache-namevirtualhost' do
   code 'sed -i -Ee "s/^#([^#]*NameVirtualHost \*:80)$/\1/" /etc/httpd/conf/httpd.conf'
 end
 
-# allow sudo from chef, without tty
-bash 'visudo' do
-  only_if 'grep -P \'^[^#]*Defaults[\t\s]+requiretty$\' /etc/sudoers'
-  code 'sed -i -Ee "s/^([^#]*requiretty)$/# \1/" /etc/sudoers'
+bash 'JST' do
+  not_if 'date | grep -q JST'
+  code 'cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime'
 end
+
+# allow root sudo from chef, without tty
+bash 'visudo' do
+  not_if 'grep -P "^[^#]*Defaults[\t\s]+\!requiretty" /etc/sudoers'
+  code 'sed -i -Ee "s/^([^#][^!]*)(requiretty).*$/\1!\2/" /etc/sudoers'
+end
+
+# bash 'visudo-root' do
+#   not_if '[ `sudo grep -Pc "^[^#]*Defaults:(root|%wheel)[\t\s]+\!requiretty" /etc/sudoers` -eq 2 ]'
+#   code 'echo -e "Defaults:root    !requiretty\nDefaults:%wheel    !requiretty" >> /etc/sudoers'
+# end
 
 bash 'composer' do
   not_if { File.exists? "/usr/local/bin/composer" }
-  #user node['fuelphp']['user']
+  user node['fuelphp']['user']
   cwd '/tmp'
   code <<-EOD
   curl -sS https://getcomposer.org/installer | php
-  mv composer.phar /usr/local/bin/composer
+  sudo mv composer.phar /usr/local/bin/composer
+  chown #{node['fuelphp']['user']} /usr/local/bin/composer
   EOD
 end
 
 bash 'fuelphp' do
   not_if { File.exists? "/usr/bin/oil" }
-  #user node['fuelphp']['user']
-  code 'curl get.fuelphp.com/oil | sh'
+  user node['fuelphp']['user']
+  code 'sudo sh -c "curl get.fuelphp.com/oil | sh"'
 end
 
