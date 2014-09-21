@@ -1,7 +1,6 @@
 ---
 driver:
   name: docker
-  socket: tcp://127.0.0.1:2375
 
 provisioner:
   name: chef_zero
@@ -10,6 +9,11 @@ platforms:
   - name: centos-6.4
     driver_config:
       image: centos:centos6
+  - name: centos-7.0
+    driver_config:
+      image: 2k0ri/centos7-systemd
+      privileged: true
+      run_command: /sbin/init
 
 suites:
   - name: default
