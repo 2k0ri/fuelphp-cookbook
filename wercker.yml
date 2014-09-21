@@ -1,4 +1,5 @@
 box: wercker-labs/docker
+no-response-timeout: 10
 services:
   - aigeruth/kitchen-docker@0.0.1
 build:
