@@ -1,0 +1,6 @@
+image: bradrydzewski/ruby:2.0.0
+script: 
+  - curl -sSL https://get.docker.io/ubuntu/ | sudo sh
+  - ln -s .kitchen.docker.yml .kitchen.yml
+  - bundle install
+  - bundle exec kitchen test -c
