@@ -1,9 +1,18 @@
 box: wercker-labs/docker
 no-response-timeout: 10
-services:
-  - aigeruth/kitchen-docker@0.0.1
 build:
   steps:
+    - script:
+        name: rvm install
+        code: |
+          sudo apt-get update -y
+          curl -sSL https://get.rvm.io | bash -s stable
+          echo "bundler" > $HOME/.rvm/gemsets/global.gems
+          source $HOME/.rvm/scripts/rvm
+          rvm install 2.1.2 --default
+          echo "gem: --no-rdoc --no-ri" >> $HOME/.gemrc
+    - rvm-use:
+        version: 2.1.2
     - bundle-install
     - script:
         name: kitchen test
