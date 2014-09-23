@@ -13,7 +13,7 @@ platforms:
     driver_config:
       image: 2k0ri/centos7-systemd
       privileged: true
-      run_command: /sbin/init
+      run_command: /sbin/init; sleep 15
 
 suites:
   - name: default
