@@ -6,7 +6,9 @@
 #
 # 
 #
-%w{httpd php mysql-server php-mysql php-pdo git sudo vim}.each do |p|
+package node['platform_version'].to_i >= 7 ? 'mariadb-server' : 'mysql-server'
+
+%w{httpd php php-mysql php-pdo git sudo vim}.each do |p|
   package p
 end
 
